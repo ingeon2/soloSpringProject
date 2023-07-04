@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class Member extends Auditable {
 
     @Id
@@ -25,8 +24,14 @@ public class Member extends Auditable {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String name;
+
     @Column(nullable = true)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Position position;
 
 
     @ElementCollection(fetch = FetchType.EAGER) //db 왔다갔다하지말고 한번에 다 꺼내와라
@@ -36,10 +41,6 @@ public class Member extends Auditable {
     private LocalDateTime createdAt = LocalDateTime.now();
 
 
-
-    public Member(String email) {
-        this.email = email;
-    }
 
 
 }

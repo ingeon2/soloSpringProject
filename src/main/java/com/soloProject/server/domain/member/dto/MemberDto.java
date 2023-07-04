@@ -15,23 +15,13 @@ public class MemberDto {
 
         @NotBlank
         @Email
-        private String email;
+        private String name;
 
         @NotBlank
         private String password;
 
-        @NotBlank
-        private String passwordConfirm;
-        
-        @NotBlank //주민번호
-        private String RRN;
 
-        @NotBlank(message = "닉네임은 공백이 아니어야 합니다")
-        @Size(max = 10, message = "닉네임은 10글자 이하여야 합니다")
-        private String nickname;
-
-        private String question;
-        private String answer;
+        private String position;
 
     }
 
