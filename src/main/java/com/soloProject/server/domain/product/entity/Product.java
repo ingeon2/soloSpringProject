@@ -1,7 +1,8 @@
-package com.soloProject.server.domain.inventory.entity;
+package com.soloProject.server.domain.product.entity;
 
 
 import com.soloProject.server.global.audit.Auditable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +13,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Inventory extends Auditable {
+@AllArgsConstructor
+public class Product extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "inventory_id")
-    private Long inventoryId;
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(nullable = false, unique = true)
     private String name;

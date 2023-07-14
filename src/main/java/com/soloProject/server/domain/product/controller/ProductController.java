@@ -1,4 +1,4 @@
-package com.soloProject.server.domain.inventory.controller;
+package com.soloProject.server.domain.product.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Transactional
 @RequiredArgsConstructor
 @RequestMapping("/inventories")
-public class InventoryController {
+public class ProductController {
     private final static String INVENTORY_DEFAULT_URL = "/inventories";
 
 

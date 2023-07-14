@@ -30,8 +30,8 @@ public class Member extends Auditable {
     @Column(nullable = true)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Position position;
+    @Column
+    private String position;
 
 
     @ElementCollection(fetch = FetchType.EAGER) //db 왔다갔다하지말고 한번에 다 꺼내와라
