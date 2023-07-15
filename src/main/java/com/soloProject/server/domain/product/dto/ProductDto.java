@@ -18,5 +18,8 @@ public class ProductDto {
 
         @NotBlank
         private int sellPrice;
+
+        @NotBlank
+        private int quantity;
     }
 }

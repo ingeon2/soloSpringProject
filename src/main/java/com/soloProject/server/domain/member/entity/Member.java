@@ -33,6 +33,9 @@ public class Member extends Auditable {
     @Column
     private String position;
 
+    @Column
+    private int balance;
+
 
     @ElementCollection(fetch = FetchType.EAGER) //db 왔다갔다하지말고 한번에 다 꺼내와라
     private List<String> roles = new ArrayList<>();

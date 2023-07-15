@@ -3,6 +3,7 @@ package com.soloProject.server.doamin.product.repository;
 
 import com.soloProject.server.domain.product.entity.Product;
 import com.soloProject.server.domain.product.repository.ProductRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,6 +24,7 @@ public class ProductRepositoryTest {
 
 
     @Test
+    @DisplayName("productRepository의 findByName 테스트")
     void findByNameTest() {
         //given
 

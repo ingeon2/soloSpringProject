@@ -30,4 +30,7 @@ public class Product extends Auditable {
     @Column(nullable = false)
     private int sellPrice;
 
+    @Column(nullable = false)
+    private int quantity;
+
 }
