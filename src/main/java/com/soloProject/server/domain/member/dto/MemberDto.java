@@ -16,6 +16,9 @@ public class MemberDto {
     public static class Create {
 
         @NotBlank
+        private long memberId;
+
+        @NotBlank
         @Email
         private String name;
 
@@ -29,7 +32,7 @@ public class MemberDto {
         private String email;
 
         @NotBlank
-        private int balance;
+        private int result;
     }
 
 

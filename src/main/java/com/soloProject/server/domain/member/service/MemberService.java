@@ -25,20 +25,25 @@ public class MemberService {
 
     public Member createMember(MemberDto.Create memberCreateDto) {
         Member member = new Member();
+        member.setMemberId(memberCreateDto.getMemberId());
         member.setName(memberCreateDto.getName());
         member.setEmail(memberCreateDto.getEmail());
         member.setPosition(memberCreateDto.getPosition());
         member.setPassword(memberCreateDto.getPassword());
 
+        memberRepository.save(member);
         return member;
     }
 
-    public void deleteMember(long memberId) {
-        Member findMember = findVerifiedMember(memberId);
-        memberRepository.delete(findMember);
+
+    public void updateResult(long memberId, int changeResult) { //어떤 멤버가 얼마만큼의 이득을 냈는지 
+        // (product의 buyPrice, sellPrice에 따라 지정)
+        Member verifiedMember = findVerifiedMember(memberId);
+        int curResult = verifiedMember.getResult();
+        verifiedMember.setResult(curResult + changeResult);
     }
 
-    private Member findVerifiedMember(long memberId) {
+    public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 

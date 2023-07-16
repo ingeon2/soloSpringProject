@@ -34,7 +34,7 @@ public class Member extends Auditable {
     private String position;
 
     @Column
-    private int balance;
+    private int result;
 
 
     @ElementCollection(fetch = FetchType.EAGER) //db 왔다갔다하지말고 한번에 다 꺼내와라

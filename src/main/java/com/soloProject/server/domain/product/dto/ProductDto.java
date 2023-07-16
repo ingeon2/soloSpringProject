@@ -11,6 +11,9 @@ public class ProductDto {
     @AllArgsConstructor
     public static class Post {
         @NotBlank
+        private long productId;
+
+        @NotBlank
         private String name;
 
         @NotBlank
