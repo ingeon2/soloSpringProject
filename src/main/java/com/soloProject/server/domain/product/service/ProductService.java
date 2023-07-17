@@ -1,6 +1,7 @@
 package com.soloProject.server.domain.product.service;
 
 import com.soloProject.server.domain.balance.entity.Balance;
+import com.soloProject.server.domain.balance.service.BalanceService;
 import com.soloProject.server.domain.member.entity.Member;
 import com.soloProject.server.domain.member.service.MemberService;
 import com.soloProject.server.domain.product.dto.ProductDto;
@@ -23,11 +24,11 @@ import java.util.Optional;
 public class ProductService {
 
     @Autowired
-    ProductRepository productRepository;
-    MemberService memberService;
-    Balance balance;
+    private final ProductRepository productRepository;
+    private final MemberService memberService;
+    private final BalanceService balanceService;
 
-    public Product createProduct (ProductDto.Post productPostDto) {
+    public Product createProduct (ProductDto.Create productPostDto) {
         Product product = new Product();
         product.setProductId(productPostDto.getProductId());
         product.setName(productPostDto.getName());
@@ -39,13 +40,16 @@ public class ProductService {
         return product;
     }
 
-    public void sellProduct(int memberId, int productId, int quantity) {
+    public void sellProduct(long memberId, long productId, int quantity) {
         Product verifiedProduct = findVerifiedProduct(productId);
 
         int money = verifiedProduct.getSellPrice() * quantity;
 
+        int curQuantity = verifiedProduct.getQuantity();
+
+        verifiedProduct.setQuantity(curQuantity - quantity);
         memberService.updateResult(memberId, money);
-        balance.updateBalance(money);
+        balanceService.updateBalance(money);
     }
 
     public void buyProduct(int memberId, int productId, int quantity) {
@@ -53,8 +57,12 @@ public class ProductService {
 
         int money = verifiedProduct.getBuyPrice() * quantity;
 
+        int curQuantity = verifiedProduct.getQuantity();
+
+        verifiedProduct.setQuantity(curQuantity + quantity);
+
         memberService.updateResult(memberId, money);
-        balance.updateBalance(money);
+        balanceService.updateBalance(money);
     }
 
 

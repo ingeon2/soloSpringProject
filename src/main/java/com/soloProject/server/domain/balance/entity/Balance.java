@@ -1,27 +1,19 @@
 package com.soloProject.server.domain.balance.entity;
 
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
+@Entity
+@Getter
+@Setter
 public class Balance {
+    @Id
+    private Long balance_id = 1L; //오직 하나
 
     private int amount;
-
-    private Balance() {}
-
-    private static class LazyHolder {
-        public static final Balance balance = new Balance();
-    }
-
-    public static Balance getInstance() {
-        return LazyHolder.balance;
-    }
-
-    public synchronized void updateBalance(int changeAmount) { //잔고 전체 변경
-        amount += changeAmount;
-    }
-
-    public int getBalance() {
-        return amount;
-    }
 
 }
