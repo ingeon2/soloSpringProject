@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Optional;
 
+//UserDetailsService를 구현한 MemberDetailsService 클래스
 @Component
 public class MemberDetailService implements UserDetailsService {
     private final MemberRepository memberRepository;
@@ -29,7 +30,7 @@ public class MemberDetailService implements UserDetailsService {
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
         Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-        return new MemberDetails(findMember);  // (1) 개선된 부분
+        return new MemberDetails(findMember);
     }
 
     //MemberDetails 클래스 추가

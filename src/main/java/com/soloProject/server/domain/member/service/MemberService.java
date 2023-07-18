@@ -3,14 +3,17 @@ package com.soloProject.server.domain.member.service;
 import com.soloProject.server.domain.member.dto.MemberDto;
 import com.soloProject.server.domain.member.entity.Member;
 import com.soloProject.server.domain.member.repository.MemberRepository;
+import com.soloProject.server.global.auth.utils.CustomAuthorityUtils;
 import com.soloProject.server.global.exception.BusinessLogicException;
 import com.soloProject.server.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,12 +25,25 @@ public class MemberService {
     @Autowired
     private final MemberRepository memberRepository;
 
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private final CustomAuthorityUtils authorityUtils;
+
     public Member createMember(MemberDto.Create memberCreateDto) {
         Member member = new Member();
         member.setName(memberCreateDto.getName());
         member.setEmail(memberCreateDto.getEmail());
         member.setPosition(memberCreateDto.getPosition());
-        member.setPassword(memberCreateDto.getPassword());
+
+        //Password 암호화
+        String encryptedPassword = passwordEncoder.encode(memberCreateDto.getPassword());
+        member.setPassword(encryptedPassword);
+
+        //DB에 User Role 저장
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
 
         memberRepository.save(member);
         return member;

@@ -44,35 +44,28 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .headers().frameOptions().sameOrigin()
-                .and()
-                .csrf().disable()
+                .csrf().disable()//CSRF 공격에 대한 Spring Security에 대한 설정을 비활성화
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
-                //.requiresChannel().anyRequest().requiresSecure()
-                //.and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //세션을 생성하지 않도록 설정
                 .and()
-                .formLogin().disable()
-                .httpBasic().disable()
+                .formLogin().disable() //폼 로그인 방식을 비활성화
+                .httpBasic().disable() //HTTP Basic 인증 방식을 비활성화
                 .exceptionHandling()
                 .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .and()
-                .apply(new CustomFilterConfigurer())
+                .apply(new CustomFilterConfigurer())//Custom Configurer를 추가해 내가 만든 Configuration을 추가
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/*/members").permitAll()
-                        .antMatchers(HttpMethod.PATCH, "/*/members/**").hasRole("USER")
-                        .antMatchers(HttpMethod.GET, "/*/members").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.GET, "/*/members/**").hasAnyRole("USER", "ADMIN")
-                        .antMatchers(HttpMethod.DELETE, "/*/members/**").hasRole("USER")
-                        .anyRequest().permitAll()
+                        //.antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") //이런식으로 역할에 따른 제한 가능
+                        .anyRequest().permitAll() //우선은 모든 HTTP request 요청에 대해서 접근을 허용하도록 설정
                 );
 
         return http.build();
     }
 
+    //PasswordEncoder Bean 객체를 생성
     @Bean
     public PasswordEncoder passwordEncoder() { //memberService에서 DI 받아 사용
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -92,18 +85,25 @@ public class SecurityConfiguration {
         return source;
     }
 
+    //CustomFilterConfigurer는 우리가 구현한 JwtAuthenticationFilter를 등록하는 역할
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
+            //getSharedObject(AuthenticationManager.class)를 통해 AuthenticationManager의 객체를 얻
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
+            //JwtAuthenticationFilter를 생성하면서 JwtAuthenticationFilter에서 사용되는 AuthenticationManager와 JwtTokenizer를 DI
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);  // (2-4)
+            //디폴트 로그인 request URL 변경
             jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
+
+            //AuthenticationSuccessHandler와 AuthenticationFailureHandler를 JwtAuthenticationFilter에 등록
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils);
 
+            //addFilter() 메서드를 통해 Filter들을 Spring Security Filter Chain에 추가
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
