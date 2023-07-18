@@ -42,7 +42,6 @@ class ProductServiceTest {
     void createProductTest() {
         //given
         ProductDto.Create productCreateDto = ProductDto.Create.builder()
-                .productId(1L)
                 .name("물건")
                 .buyPrice(100)
                 .sellPrice(120)

@@ -28,7 +28,6 @@ public class MemberServiceTest {
     void createMemberTest() {
         //given
         MemberDto.Create memberCreateDto = MemberDto.Create.builder()
-                .memberId(2L)
                 .name("나부장")
                 .email("ddd@ddd.com")
                 .position("부장")

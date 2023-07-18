@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +24,6 @@ public class MemberService {
 
     public Member createMember(MemberDto.Create memberCreateDto) {
         Member member = new Member();
-        member.setMemberId(memberCreateDto.getMemberId());
         member.setName(memberCreateDto.getName());
         member.setEmail(memberCreateDto.getEmail());
         member.setPosition(memberCreateDto.getPosition());

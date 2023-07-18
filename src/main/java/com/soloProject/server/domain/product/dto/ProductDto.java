@@ -12,19 +12,14 @@ public class ProductDto {
     @Builder
     @AllArgsConstructor
     public static class Create {
-        @NotBlank
-        private long productId;
 
         @NotBlank
         private String name;
 
-        @NotBlank
         private int buyPrice;
 
-        @NotBlank
         private int sellPrice;
 
-        @NotBlank
         private int quantity;
     }
 }

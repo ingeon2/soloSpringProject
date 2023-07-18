@@ -30,7 +30,6 @@ public class ProductService {
 
     public Product createProduct (ProductDto.Create productPostDto) {
         Product product = new Product();
-        product.setProductId(productPostDto.getProductId());
         product.setName(productPostDto.getName());
         product.setBuyPrice(productPostDto.getBuyPrice());
         product.setSellPrice(productPostDto.getSellPrice());
@@ -40,7 +39,7 @@ public class ProductService {
         return product;
     }
 
-    public void sellProduct(long memberId, long productId, int quantity) {
+    public Product sellProduct(long memberId, long productId, int quantity) {
         Product verifiedProduct = findVerifiedProduct(productId);
 
         int money = verifiedProduct.getSellPrice() * quantity;
@@ -50,9 +49,11 @@ public class ProductService {
         verifiedProduct.setQuantity(curQuantity - quantity);
         memberService.updateResult(memberId, money);
         balanceService.updateBalance(money);
+
+        return verifiedProduct;
     }
 
-    public void buyProduct(int memberId, int productId, int quantity) {
+    public Product buyProduct(long memberId, long productId, int quantity) {
         Product verifiedProduct = findVerifiedProduct(productId);
 
         int money = verifiedProduct.getBuyPrice() * quantity;
@@ -61,8 +62,10 @@ public class ProductService {
 
         verifiedProduct.setQuantity(curQuantity + quantity);
 
-        memberService.updateResult(memberId, money);
-        balanceService.updateBalance(money);
+        memberService.updateResult(memberId, -money);
+        balanceService.updateBalance(-money);
+
+        return verifiedProduct;
     }
 
 
