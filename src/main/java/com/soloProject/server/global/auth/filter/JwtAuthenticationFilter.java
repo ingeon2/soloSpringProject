@@ -67,9 +67,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //토큰 생성
         String accessToken = delegateAccessToken(member);
+        String refreshToken = delegateRefreshToken(member);
 
         //토큰들을 헤더에 담음
         response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader("Refresh", refreshToken);
 
         //MemberAuthenticationSuccessHandler의 onAuthenticationSuccess() 메서드를 호출하기위해
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
@@ -90,6 +92,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
 
         return accessToken;
+    }
+
+    //Refresh Token을 생성하는 구체적인 로직
+    private String delegateRefreshToken(Member member) {
+        String subject = member.getEmail();
+        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+
+        return refreshToken;
     }
 
 

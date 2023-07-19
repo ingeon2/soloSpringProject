@@ -52,6 +52,19 @@ public class JwtTokenizer { //JWT 를 생성하고 검증하는 역할을 수행
                 .compact();
     }
 
+    //RefreshToken 생성 매서드 (위의 AccessToken 발급과 유사)
+    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(Calendar.getInstance().getTime())
+                .setExpiration(expiration)
+                .signWith(key)
+                .compact();
+    }
+
+
     public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
