@@ -1,8 +1,6 @@
 package com.soloProject.server.domain.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -10,8 +8,10 @@ import javax.validation.constraints.NotBlank;
 public class MemberDto {
 
     @Getter
+    @Setter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Create {
 
         @NotBlank

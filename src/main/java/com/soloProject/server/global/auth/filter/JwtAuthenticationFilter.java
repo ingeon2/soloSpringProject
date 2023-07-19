@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soloProject.server.domain.member.entity.Member;
 import com.soloProject.server.global.auth.dto.LoginDto;
 import com.soloProject.server.global.auth.jwt.JwtTokenizer;
+import com.soloProject.server.global.redis.RedisService;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,14 +27,18 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+    private final RedisService redisService;
 
 
 
     //DI 받은 AuthenticationManager는 로그인 인증 정보(Username/Password)를 전달받아 UserDetailsService와 인터랙션 한 뒤 인증 여부를 판단합니다.
     //DI 받은 JwtTokenizer는 클라이언트가 인증에 성공할 경우, JWT를 생성 및 발급하는 역할
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
+                                   JwtTokenizer jwtTokenizer,
+                                   RedisService redisService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenizer = jwtTokenizer;
+        this.redisService = redisService;
     }
 
 
@@ -72,6 +77,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //토큰들을 헤더에 담음
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
+
+        //refreshToken만 redis 저장
+        redisService.saveRefreshTokenToRedis(refreshToken, member.getMemberId());
 
         //MemberAuthenticationSuccessHandler의 onAuthenticationSuccess() 메서드를 호출하기위해
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);

@@ -9,6 +9,7 @@ import com.soloProject.server.global.auth.handler.MemberAuthenticationFailureHan
 import com.soloProject.server.global.auth.handler.MemberAuthenticationSuccessHandler;
 import com.soloProject.server.global.auth.jwt.JwtTokenizer;
 import com.soloProject.server.global.auth.utils.CustomAuthorityUtils;
+import com.soloProject.server.global.redis.RedisService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,11 +35,14 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
+    private final RedisService redisService;
 
     public SecurityConfiguration(JwtTokenizer jwtTokenizer,
-                                 CustomAuthorityUtils customAuthorityUtils) {
+                                 CustomAuthorityUtils customAuthorityUtils,
+                                 RedisService redisService) {
         this.jwtTokenizer = jwtTokenizer;
         this.customAuthorityUtils = customAuthorityUtils;
+        this.redisService = redisService;
     }
 
     @Bean
@@ -93,7 +97,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             //JwtAuthenticationFilter를 생성하면서 JwtAuthenticationFilter에서 사용되는 AuthenticationManager와 JwtTokenizer를 DI
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);  // (2-4)
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisService);
             //디폴트 로그인 request URL 변경
             jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
 
