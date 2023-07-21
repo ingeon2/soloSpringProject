@@ -38,6 +38,8 @@ public class Member extends Auditable {
 
 
     @ElementCollection(fetch = FetchType.EAGER) //db 왔다갔다하지말고 한번에 다 꺼내와라
+    @CollectionTable(name = "member_roles", joinColumns = @JoinColumn(name = "member_id"))
+    @org.hibernate.annotations.ForeignKey(name = "none") // 외래 키 제약 조건 무시
     private List<String> roles = new ArrayList<>();
 
     @Column(nullable = false)

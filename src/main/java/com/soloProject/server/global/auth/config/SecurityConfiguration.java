@@ -9,11 +9,9 @@ import com.soloProject.server.global.auth.handler.MemberAuthenticationFailureHan
 import com.soloProject.server.global.auth.handler.MemberAuthenticationSuccessHandler;
 import com.soloProject.server.global.auth.jwt.JwtTokenizer;
 import com.soloProject.server.global.auth.utils.CustomAuthorityUtils;
-import com.soloProject.server.global.redis.RedisService;
-import org.springframework.beans.factory.annotation.Value;
+import com.soloProject.server.global.redis.service.RedisService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

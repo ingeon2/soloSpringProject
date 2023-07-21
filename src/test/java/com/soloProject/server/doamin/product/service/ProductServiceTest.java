@@ -7,8 +7,6 @@ import com.soloProject.server.domain.product.dto.ProductDto;
 import com.soloProject.server.domain.product.entity.Product;
 import com.soloProject.server.domain.product.repository.ProductRepository;
 import com.soloProject.server.domain.product.service.ProductService;
-import io.jsonwebtoken.lang.Assert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

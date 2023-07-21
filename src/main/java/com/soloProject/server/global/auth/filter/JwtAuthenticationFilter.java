@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soloProject.server.domain.member.entity.Member;
 import com.soloProject.server.global.auth.dto.LoginDto;
 import com.soloProject.server.global.auth.jwt.JwtTokenizer;
-import com.soloProject.server.global.redis.RedisService;
+import com.soloProject.server.global.redis.service.RedisService;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
