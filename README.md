@@ -59,3 +59,19 @@ https://velog.io/@dlsrjsdl6505/%ED%98%BC%EC%9E%90-%ED%95%98%EB%8A%94-Spring-%ED%
 https://velog.io/@dlsrjsdl6505/%ED%98%BC%EC%9E%90-%ED%95%98%EB%8A%94
 <br/>
 <br/>
+
+****
+## 2023/07/22
+### 혼자 하는 Spring 프로젝트 - 9 : AWS 서버 구축
+
+https://velog.io/@dlsrjsdl6505/%ED%98%BC%EC%9E%90-%ED%95%98%EB%8A%94-Spring-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-9-AWS-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95
+<br/>
+<br/>
+
+****
+## 2023/07/24
+### 혼자 하는 Spring 프로젝트 - 10 : CD/CD with Jenkins, Docker, AWS
+
+https://velog.io/@dlsrjsdl6505/%ED%98%BC%EC%9E%90-%ED%95%98%EB%8A%94-Spring-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-10-CDCD-with-Jenkins-Docker-AWS
+<br/>
+<br/>
