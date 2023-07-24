@@ -26,7 +26,7 @@ import java.net.URI;
 @Validated
 @Transactional
 @RequiredArgsConstructor
-@RequestMapping("/products")
+@RequestMapping("/products") //
 @Api(tags = {"재고 API Test"})  // Swagger 최상단 Controller 명칭
 public class ProductController {
     private final static String PRODUCT_DEFAULT_URL = "/products";
