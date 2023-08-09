@@ -2,6 +2,7 @@ package com.soloProject.server.global.auth.filter;
 
 import com.soloProject.server.global.auth.jwt.JwtTokenizer;
 import com.soloProject.server.global.auth.utils.CustomAuthorityUtils;
+import com.soloProject.server.global.redis.service.RedisService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,19 +22,30 @@ import java.util.Map;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final RedisService redisService;
 
 
     public JwtVerificationFilter(JwtTokenizer jwtTokenizer,
-                                 CustomAuthorityUtils authorityUtils) {
+                                 CustomAuthorityUtils authorityUtils,
+                                 RedisService redisService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.redisService = redisService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ServletException, IOException {
         try {
             Map<String, Object> claims = verifyJws(request);
-            setAuthenticationToContext(claims);
+
+
+            if(verifyRefreshToken(claims, redisService)) { //받은 토큰이 유효하다면 Spring context로 가자!
+                setAuthenticationToContext(claims);
+            }
+            else {
+                throw new Exception("선생님 토큰이 만료되셨습니다");
+            }
+
         } catch (ExpiredJwtException ee) {
             request.setAttribute("exception", ee);
         } catch (Exception e) {
@@ -70,13 +82,25 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         // JWT에서 파싱 한 Claims에서 username을 얻음
         String username = (String) claims.get("username");
 
-        //JWT의 Claims에서 얻은 권한 정보를 기반으로 List<GrantedAuthority를 생성
+        //JWT의 Claims에서 얻은 권한 정보를 기반으로 List<GrantedAuthority>를 생성
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
 
-        //username과 List<GrantedAuthority를 포함한 Authentication 객체를 생성
+        //username과 List<GrantedAuthority>를 포함한 Authentication 객체를 생성
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
 
         //SecurityContext에 Authentication 객체를 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private boolean verifyRefreshToken(Map<String, Object> claims, RedisService redisService) {
+        // 클라이언트가 전달한 refreshToken
+        String clientRefreshToken = (String) claims.get("refreshToken");
+        
+        // redis에 저장해놓았던 기존의 토큰
+        long memberId = (Long) claims.get("memberId");
+        String refreshTokenFromRedis = redisService.getRefreshTokenFromRedis(memberId);
+
+        if(refreshTokenFromRedis.equals(null) || !clientRefreshToken.equals(refreshTokenFromRedis)) return false;
+        return true;
     }
 }
