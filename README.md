@@ -78,7 +78,7 @@ https://velog.io/@dlsrjsdl6505/%ED%98%BC%EC%9E%90-%ED%95%98%EB%8A%94-Spring-%ED%
 
 ****
 ## 2023/07/26
-### 혼자 하는 Spring 프로젝트 - 11 : 회고
+### 혼자 하는 Spring 프로젝트 - 11 : 회고.
 
 https://velog.io/@dlsrjsdl6505/%ED%98%BC%EC%9E%90-%ED%95%98%EB%8A%94-Spring-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-11-%ED%9A%8C%EA%B3%A0
 <br/>
