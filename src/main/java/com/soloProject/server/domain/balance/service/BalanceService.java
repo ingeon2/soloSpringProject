@@ -25,6 +25,7 @@ public class BalanceService {
         return balance;
     }
 
+    //balance존재 여부 체크
     public int getBalance() {
         Balance balance = balanceRepository.findById(1L).orElse(null);
         return (balance != null) ? balance.getAmount() : 0;

@@ -28,6 +28,9 @@ dependencies {
 	//Mysql
 	implementation 'mysql:mysql-connector-java:8.0.27'
 
+	//h2
+	implementation 'com.h2database:h2'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' //redis
 	implementation 'org.springframework.boot:spring-boot-starter-security' //스프링 시큐리티
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5' //JWT
